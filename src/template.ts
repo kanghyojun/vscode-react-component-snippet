@@ -1,5 +1,6 @@
 export const indexTs = (componentName: string): string => {
-  return `export { default, type ${componentName}Props } from './${componentName}';`;
+  return `export { default, type ${componentName}Props } from './${componentName}';
+`;
 };
 
 export const componentTs = (componentName: string): string => {

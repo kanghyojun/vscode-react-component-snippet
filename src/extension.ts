@@ -18,6 +18,58 @@ export function activate(context: vscode.ExtensionContext) {
     'Congratulations, your extension "react-component-snippet" is now active!'
   );
 
+  let disposable2 = vscode.commands.registerCommand(
+    "react-component-snippet.createReactComponentViaExplorer",
+    async (fileUri) => {
+      let directory = undefined;
+      if (fileUri instanceof vscode.Uri) {
+        const fstat = await vscode.workspace.fs.stat(fileUri);
+        if (fstat.type === vscode.FileType.Unknown) {
+          vscode.window.showInformationMessage("Neither directory or file.");
+          return;
+        } else if (fstat.type === vscode.FileType.Directory) {
+          directory = fileUri;
+        } else {
+          directory = vscode.Uri.joinPath(fileUri, "../");
+        }
+      }
+
+      if (directory === undefined) {
+        return;
+      }
+
+      const id =
+        (await vscode.window.showInputBox({
+          prompt: "Input react component's name",
+          placeHolder: "TextField",
+          value: "ExampleComponent",
+        })) || "";
+
+      try {
+        const baseDir = vscode.Uri.joinPath(directory, id);
+        vscode.workspace.fs.createDirectory(baseDir);
+        var enc = new TextEncoder(); // always utf-8
+        vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(baseDir, "index.ts"),
+          enc.encode(indexTs(id))
+        );
+        vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(baseDir, `${id}.tsx`),
+          enc.encode(componentTs(id))
+        );
+        vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(baseDir, `${id}.stories.tsx`),
+          enc.encode(componentStoriesTs(id))
+        );
+        vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(baseDir, `${id}.test.tsx`),
+          enc.encode(componentTestTs(id))
+        );
+      } catch (e) {
+        vscode.window.showInformationMessage(`error ${e}`);
+      }
+    }
+  );
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
@@ -62,6 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+  context.subscriptions.push(disposable2);
 }
 
 // This method is called when your extension is deactivated
