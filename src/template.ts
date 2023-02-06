@@ -21,7 +21,7 @@ export default memo(${componentName});
 export const componentStoriesTs = (componentName: string): string => {
   return `import { Meta, Story } from '@storybook/react/types-6-0';
 
-import ${componentName}, { ${componentName}Props } from './${componentName}';
+import ${componentName}, { ${componentName}Props } from '.';
 
 export default {
   title: 'components/${componentName}',
@@ -40,7 +40,7 @@ Plain.args = {};
 export const componentTestTs = (componentName: string): string => {
   return `import { render } from '@testing-library/react';
 
-import ${componentName} from './${componentName}';
+import ${componentName} from '.';
 
 describe('<${componentName} />', () => {
   it('should render', () => {
