@@ -2,7 +2,7 @@
   "name": "react-component-snippet",
   "displayName": "react-component-snippet",
   "description": "",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/kanghyojun/vscode-react-component-snippet",
   "engines": {
     "vscode": "^1.74.0"
