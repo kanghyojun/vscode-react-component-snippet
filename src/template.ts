@@ -19,7 +19,7 @@ export default memo(${componentName});
 };
 
 export const componentStoriesTs = (componentName: string): string => {
-  return `import { Meta, Story } from '@storybook/react/types-6-0';
+  return `import { Meta, StoryFn } from '@storybook/react';
 
 import ${componentName}, { ${componentName}Props } from '.';
 
@@ -28,7 +28,7 @@ export default {
   component: ${componentName},
 } as Meta;
 
-const Template: Story<${componentName}Props> = (args) => {
+const Template: StoryFn<${componentName}Props> = (args) => {
   return <${componentName} {...args} />;
 };
 
